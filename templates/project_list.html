@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2 class="mb-1">My Projects</h2>
+    <p class="text-muted mb-0">Pick a board or create a new one.</p>
+  </div>
+  <a href="{% url 'project_create' %}" class="btn gradient-btn btn-lg">
+    + New Project
+  </a>
+</div>
+
+{% if projects %}
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for project in projects %}
+      <div class="col">
+        <div class="glass-card h-100 p-3">
+          <div class="d-flex flex-column h-100">
+            <h5 class="mb-2">
+              <a href="{% url 'project_detail' project.pk %}" class="text-white">
+                {{ project.name }}
+              </a>
+            </h5>
+            <p class="text-muted small flex-grow-1">
+              {{ project.description|default:"No description added yet." }}
+            </p>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <span class="badge bg-secondary">
+                {{ project.created_at|date:"M d, Y" }}
+              </span>
+              <a href="{% url 'project_detail' project.pk %}"
+                 class="btn gradient-outline-btn btn-sm">
+                Open board
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="text-center mt-5">
+    <h4 class="mb-3">No projects yet</h4>
+    <p class="text-muted mb-4">Create your first project board to get started.</p>
+    <a href="{% url 'project_create' %}" class="btn gradient-btn btn-lg">
+      Create your first project
+    </a>
+  </div>
+{% endif %}
+{% endblock %}

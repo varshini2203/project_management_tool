@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ project.name }}</h2>
+<p class="text-muted">{{ project.description }}</p>
+<p class="mb-4">
+  <a href="{% url 'project_list' %}" class="btn gradient-outline-btn btn-sm">Back</a>
+  <a href="{% url 'project_edit' project.id %}" class="btn gradient-outline-btn btn-sm ms-2">Edit</a>
+  <a href="{% url 'project_delete' project.id %}" class="btn btn-danger btn-sm ms-2">Delete</a>
+</p>
+
+<div class="row">
+  {% for tl in tasklists %}
+    <div class="col-md-4 mb-3">
+      <div class="glass-card p-3 h-100">
+        <h5 class="mb-3">{{ tl.title }}</h5>
+        {% for task in tl.tasks.all %}
+          <div class="mb-2 p-2 rounded"
+               style="background: rgba(15,23,42,0.9); border: 1px solid rgba(148,163,184,0.4);">
+            <div class="d-flex justify-content-between align-items-center">
+              <a href="{% url 'task_detail' task.id %}" class="text-white">
+                {{ task.title }}
+              </a>
+              <div class="btn-group btn-group-sm">
+                <a href="{% url 'move_task' task.id 'left' %}"
+                   class="btn gradient-outline-btn">◀</a>
+                <a href="{% url 'move_task' task.id 'right' %}"
+                   class="btn gradient-outline-btn">▶</a>
+              </div>
+            </div>
+            {% if task.due_date %}
+              <small class="text-muted">Due: {{ task.due_date }}</small>
+            {% endif %}
+          </div>
+        {% empty %}
+          <p class="text-muted">No tasks.</p>
+        {% endfor %}
+
+        <form method="post" class="mt-2">
+          {% csrf_token %}
+          <input type="hidden" name="task_list_id" value="{{ tl.id }}">
+          <div class="input-group input-group-sm">
+            <input type="text" name="title" class="form-control"
+                   placeholder="New task">
+            <button class="btn gradient-btn btn-sm" type="submit">Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6 col-md-8">
+    <div class="glass-card">
+      <div class="p-4 border-bottom border-secondary">
+        <h3 class="mb-1">Create New Project</h3>
+        <p class="text-muted mb-0">Set up a board for your team or task group.</p>
+      </div>
+      <div class="p-4">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Project name</label>
+            <input type="text" name="name" class="form-control"
+                   placeholder="e.g. GATE Study Plan" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Description</label>
+            <textarea name="description" class="form-control" rows="4"
+                      placeholder="Describe the goals, timeline, or members."></textarea>
+          </div>
+          <div class="mb-3">
+            <div class="alert alert-info small mb-0">
+              <strong>Tip:</strong> Your board will start with
+              <span class="badge bg-secondary">To Do</span>,
+              <span class="badge bg-secondary">Doing</span>,
+              <span class="badge bg-secondary">Done</span>.
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mt-4">
+            <a href="{% url 'project_list' %}" class="btn gradient-outline-btn">
+              Cancel
+            </a>
+            <button type="submit" class="btn gradient-btn">
+              Create Project
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
